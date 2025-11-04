@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Scores | Y-Ultimate</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/coach-style.css" />
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    .live-indicator {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .match-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .match-card.live {
+      border-left: 5px solid #dc3545;
+      background: linear-gradient(135deg, rgba(220, 53, 69, 0.05), rgba(220, 53, 69, 0.02));
+    }
+    .match-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(45, 89, 64, 0.15);
+    }
+    .score-display {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2d5940;
+    }
+    .team-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .match-info {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .dashboard-title {
+      color: #2d5940;
+      font-size: 36px;
+      font-weight: 800;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="logo">
+            <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+            <span>Y-Ultimate</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="leaderboard.html">Tournaments</a></li>
+            <li><a href="live-scores.html">Live Scores</a></li>
+            <li><a href="match-schedule.html">Schedule</a></li>
+            <li><a href="spirit.html">Spirit Scoring</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="login.html" class="btn btn--primary">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+  <main class="container py-4">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h1 class="dashboard-title mb-2">
+        <i class="bi bi-broadcast me-2"></i>⚡ Live Match Scores
+      </h1>
+      <p class="text-muted">Real-time updates from ongoing tournaments</p>
+      <small class="text-muted">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Auto-refreshes every 30 seconds
+      </small>
+    </div>
+
+    <!-- Live Matches -->
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="section-title mb-0">
+          <span class="badge bg-danger live-indicator me-2">
+            <i class="bi bi-broadcast"></i> LIVE
+          </span>
+          Live Now
+        </h4>
+        <span class="badge bg-light text-dark" id="liveCount">2 matches</span>
+      </div>
+
+      <div class="row g-4" id="liveMatchesContainer">
+        <!-- Live matches will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Upcoming Today -->
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="section-title mb-0">
+          <i class="bi bi-clock-history me-2"></i>Coming Up Today
+        </h4>
+      </div>
+
+      <div class="row g-3" id="upcomingTodayContainer">
+        <!-- Upcoming matches will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Recent Results -->
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="section-title mb-0">
+          <i class="bi bi-check-circle me-2"></i>Recent Results
+        </h4>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div id="recentResultsContainer">
+            <!-- Recent results will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 small text-muted">
+    © 2025 Y-Ultimate | Built with 💚 by Team Null
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Mock Data Script -->
+  <script>
+/**
+ * ========================================
+ * LIVE SCORING - MOCK DATA
+ * ========================================
+ */
+
+const mockLiveMatches = [
+    {
+        id: 1,
+        tournament: "Summer Championship",
+        team1: { name: "Hawks", score: 12, logo: "🦅" },
+        team2: { name: "Eagles", score: 10, logo: "🦅" },
+        field: "Field 1",
+        startTime: "2:00 PM",
+        status: "live",
+        quarter: "3rd Quarter"
+    },
+    {
+        id: 2,
+        tournament: "Winter League",
+        team1: { name: "Phoenix", score: 8, logo: "🔥" },
+        team2: { name: "Thunder", score: 8, logo: "⚡" },
+        field: "Field 2",
+        startTime: "2:30 PM",
+        status: "live",
+        quarter: "2nd Quarter"
+    }
+];
+
+const mockUpcomingMatches = [
+    {
+        id: 3,
+        tournament: "Summer Championship",
+        team1: { name: "Warriors", logo: "⚔️" },
+        team2: { name: "Titans", logo: "🛡️" },
+        field: "Field 1",
+        startTime: "4:00 PM",
+        status: "upcoming"
+    },
+    {
+        id: 4,
+        tournament: "Youth Tournament",
+        team1: { name: "Dragons", logo: "🐉" },
+        team2: { name: "Lions", logo: "🦁" },
+        field: "Field 3",
+        startTime: "4:30 PM",
+        status: "upcoming"
+    }
+];
+
+const mockCompletedMatches = [
+    {
+        id: 5,
+        tournament: "Summer Championship",
+        team1: { name: "Raptors", score: 15, logo: "🦖" },
+        team2: { name: "Falcons", score: 13, logo: "🦅" },
+        field: "Field 2",
+        completedTime: "1:30 PM"
+    },
+    {
+        id: 6,
+        tournament: "Winter League",
+        team1: { name: "Wolves", score: 14, logo: "🐺" },
+        team2: { name: "Bears", score: 11, logo: "🐻" },
+        field: "Field 1",
+        completedTime: "12:00 PM"
+    }
+];
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    renderLiveMatches();
+    renderUpcomingMatches();
+    renderCompletedMatches();
+    
+    // Auto-refresh scores every 10 seconds (simulated)
+    setInterval(updateScores, 10000);
+});
+
+function renderLiveMatches() {
+    const container = document.getElementById('liveMatchesContainer');
+    if (!container) return;
+    
+    container.innerHTML = mockLiveMatches.map(match => `
+        <div class="col-md-6">
+            <div class="match-card live">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-danger">🔴 ${match.quarter}</span>
+                    <small class="text-muted">${match.tournament}</small>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-center flex-fill">
+                        <div class="mb-2">${match.team1.logo}</div>
+                        <div class="team-name">${match.team1.name}</div>
+                        <div class="score-display">${match.team1.score}</div>
+                    </div>
+                    <div class="text-center px-3">
+                        <h3 class="text-muted">VS</h3>
+                    </div>
+                    <div class="text-center flex-fill">
+                        <div class="mb-2">${match.team2.logo}</div>
+                        <div class="team-name">${match.team2.name}</div>
+                        <div class="score-display">${match.team2.score}</div>
+                    </div>
+                </div>
+                <div class="text-center mt-3 match-info">
+                    📍 ${match.field} | ⏰ Started at ${match.startTime}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderUpcomingMatches() {
+    const container = document.getElementById('upcomingTodayContainer');
+    if (!container) return;
+    
+    container.innerHTML = mockUpcomingMatches.map(match => `
+        <div class="col-md-6">
+            <div class="match-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-secondary">⏳ Upcoming</span>
+                    <small class="text-muted">${match.tournament}</small>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-center flex-fill">
+                        <div class="mb-2" style="font-size: 2rem;">${match.team1.logo}</div>
+                        <div class="team-name">${match.team1.name}</div>
+                    </div>
+                    <div class="text-center px-3">
+                        <h4 class="text-muted">VS</h4>
+                    </div>
+                    <div class="text-center flex-fill">
+                        <div class="mb-2" style="font-size: 2rem;">${match.team2.logo}</div>
+                        <div class="team-name">${match.team2.name}</div>
+                    </div>
+                </div>
+                <div class="text-center mt-3 match-info">
+                    📍 ${match.field} | ⏰ ${match.startTime}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderCompletedMatches() {
+    const container = document.getElementById('recentResultsContainer');
+    if (!container) return;
+    
+    container.innerHTML = mockCompletedMatches.map(match => `
+        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+            <div class="flex-fill">
+                <div><strong>${match.team1.name}</strong> vs <strong>${match.team2.name}</strong></div>
+                <small class="text-muted">${match.tournament} • ${match.field}</small>
+            </div>
+            <div class="text-center">
+                <h5 class="mb-0"><strong>${match.team1.score} - ${match.team2.score}</strong></h5>
+                <small class="text-muted">Completed at ${match.completedTime}</small>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateScores() {
+    // Simulate score updates for live matches
+    mockLiveMatches.forEach(match => {
+        if (Math.random() > 0.7) { // 30% chance of score change
+            if (Math.random() > 0.5) {
+                match.team1.score++;
+            } else {
+                match.team2.score++;
+            }
+        }
+    });
+    renderLiveMatches();
+}
+  </script>
+
+</body>
+</html>

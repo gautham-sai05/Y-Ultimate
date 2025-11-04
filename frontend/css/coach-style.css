@@ -1,0 +1,355 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ========================================
+  Y-ULTIMATE COACH MODULE - SHARED STYLES
+  ======================================== */
+
+:root {
+  --color-cream: #EDEEC9;
+  --color-soft-green: #DDE7C7;
+  --color-medium-green: #BFD8BD;
+  --color-fresh-green: #98C9A3;
+  --color-deep-green: #77BFA3;
+  --color-dark-text: #2d5940;
+  --color-white: #ffffff;
+  --color-border: var(--color-medium-green);
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  font-family: var(--font-family-base) !important;
+  background-color: var(--color-cream);
+  color: var(--color-dark-text);
+}
+
+/* Inter loaded above for consistent typography across the site */
+
+/* Make footer stick to bottom when content is short */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: var(--color-white);
+  border-bottom: 2px solid var(--color-medium-green);
+}
+
+/* Make navbar sticky so notification icon stays visible while scrolling */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1040; /* above content but below modals */
+}
+
+.navbar-brand {
+  color: var(--color-deep-green) !important;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  color: var(--color-dark-text);
+  font-weight: 700;
+}
+
+/* Stat Cards */
+.stat-card {
+  background-color: var(--color-white);
+  border-left: 6px solid var(--color-deep-green);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(45, 89, 64, 0.2);
+}
+
+.stat-card h6 {
+  color: var(--color-dark-text);
+  font-size: 0.95rem;
+}
+
+.stat-card h2 {
+  color: var(--color-deep-green);
+}
+
+/* Section Titles */
+.section-title {
+  color: var(--color-dark-text);
+  font-weight: 600;
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--color-deep-green);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-fresh-green);
+  color: var(--color-dark-text);
+}
+
+.btn-success {
+  background-color: var(--color-fresh-green);
+  border: none;
+  color: var(--color-dark-text);
+}
+
+.btn-success:hover {
+  background-color: var(--color-deep-green);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--color-soft-green);
+  border: none;
+  color: var(--color-dark-text);
+}
+
+.btn-info {
+  background-color: var(--color-medium-green);
+  border: none;
+  color: var(--color-dark-text);
+}
+
+.btn-warning {
+  background-color: #f4a261;
+  border: none;
+  color: var(--color-white);
+}
+
+/* Card Styles */
+.card {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.card-title {
+  color: var(--color-dark-text);
+  font-weight: 600;
+}
+
+/* Table Styles */
+.table {
+  background-color: var(--color-white);
+}
+
+.table thead {
+  background-color: var(--color-soft-green);
+  color: var(--color-dark-text);
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--color-cream);
+}
+
+/* Form Styles */
+.form-control, .form-select {
+  border: 2px solid var(--color-medium-green);
+  border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--color-deep-green);
+  box-shadow: 0 0 0 0.2rem rgba(119, 191, 163, 0.25);
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+  color: var(--color-dark-text);
+  border: none;
+  border-bottom: 3px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--color-deep-green);
+  background-color: transparent;
+  border-bottom: 3px solid var(--color-deep-green);
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link:hover {
+  border-bottom: 3px solid var(--color-fresh-green);
+}
+
+/* Badge Styles */
+.badge {
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+}
+
+/* Notification badge tweaks: ensure it is visible and doesn't get clipped by parent containers */
+.navbar .nav-item {
+  overflow: visible; /* allow badge to overflow anchor */
+}
+
+/* Override the utility classes so the badge sits nicely on the bell icon */
+#notifCount {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  /* move the badge slightly closer to the icon (reduced X translate) */
+  transform: translate(15%, -40%) !important;
+  font-size: 0.65rem;
+  line-height: 1;
+  padding: 0.22rem 0.45rem;
+  border: 2px solid var(--color-white);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+/* Ensure notification anchor has room so badge doesn't overflow into next nav item */
+#notificationDropdown {
+  display: inline-flex;
+  align-items: center;
+  /* slightly reduce padding so the badge sits visually on the bell without pushing the next item */
+  padding-right: 0.25rem;
+}
+
+/* Prevent the badge from projecting too far right; keep it visually on the bell */
+#notificationDropdown #notifCount {
+  /* fine-tuned positioning for the badge when inside the dropdown toggle anchor */
+  transform: translate(8%, -45%) !important;
+  right: 0 !important;
+  top: 0 !important;
+  z-index: 1050;
+}
+
+/* Add a little breathing room before the coach name so they never collide */
+.navbar .nav-item.text-end {
+  margin-left: 0.4rem;
+}
+
+/* Notification item layout inside dropdown */
+.dropdown-menu .notif-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.dropdown-menu .notif-message {
+  min-width: 0;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.dropdown-menu .notif-time {
+  display: block;
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+/* Make long notification dropdowns scrollable and constrained in height */
+.dropdown-menu[aria-labelledby="notificationDropdown"] {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Search and Filter Section */
+.search-filter-section {
+  background-color: var(--color-white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--color-border);
+}
+
+/* Profile Header */
+.profile-header {
+  background: linear-gradient(135deg, var(--color-deep-green), var(--color-fresh-green));
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+/* Range Slider */
+.form-range::-webkit-slider-thumb {
+  background: var(--color-deep-green);
+}
+
+.form-range::-moz-range-thumb {
+  background: var(--color-deep-green);
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-medium-green);
+  margin-top: 3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+
+  .stat-card h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Extra compact rules for small phones */
+@media (max-width: 576px) {
+  .profile-header {
+    padding: 1rem;
+  }
+
+  .search-filter-section {
+    padding: 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.25rem;
+  }
+
+  .navbar .d-flex.align-items-center {
+    gap: 0.5rem;
+  }
+
+  .navbar-brand img {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Move badge slightly for very small screens to avoid overlap */
+  #notifCount {
+    transform: translate(12%, -55%) !important;
+  }
+
+  /* Compact cards and buttons for small devices */
+  .card, .stat-card, .section-card {
+    padding: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+
+  .btn, .btn-primary, .btn-success, .btn-secondary {
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Make action buttons full-width where it makes sense on small screens */
+  .d-flex .btn, .d-grid .btn {
+    width: 100%;
+  }
+
+  /* Reduce table cell padding for small screens */
+  .table td, .table th {
+    padding: 8px !important;
+    font-size: 0.9rem !important;
+  }
+}

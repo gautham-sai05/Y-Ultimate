@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Tournaments - Y-Ultimate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;500;600;700&family=Roboto+Flex:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Additional Tournament Page Styles */
+        .stats-bar {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            border: 3px solid var(--color-medium-green);
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-deep-green);
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        
+        .featured-banner {
+            background: linear-gradient(135deg, var(--color-deep-green) 0%, var(--color-fresh-green) 100%);
+            color: rgb(28, 241, 74);
+            padding: 48px 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .featured-banner h2 {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+        
+        .featured-banner p {
+            font-size: 18px;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+        
+        .tournament-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+        
+        .tournament-card {
+            background: white;
+            border: 3px solid var(--color-medium-green);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .tournament-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(45, 89, 64, 0.15);
+            border-color: var(--color-deep-green);
+        }
+        
+        .tournament-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .tournament-card h3 {
+            color: var(--color-dark-text);
+            font-size: 20px;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .tournament-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 12px;
+            white-space: nowrap;
+        }
+        
+        .badge-active {
+            background: rgba(152, 201, 163, 0.3);
+            color: #2d5940;
+        }
+        
+        .badge-upcoming {
+            background: rgba(245, 158, 11, 0.2);
+            color: #92400e;
+        }
+        
+        .badge-completed {
+            background: rgba(156, 163, 175, 0.2);
+            color: #4b5563;
+        }
+        
+        .tournament-info p {
+            color: var(--color-text-secondary);
+            margin: 8px 0;
+            font-size: 15px;
+        }
+        
+        .tournament-footer {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid var(--color-soft-green);
+            color: var(--color-deep-green);
+            font-weight: 600;
+        }
+        
+        .browse-controls {
+            margin-bottom: 32px;
+        }
+        
+        .browse-controls > div {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        #searchTournaments {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 2px solid var(--color-medium-green);
+            border-radius: 12px;
+            font-family: var(--font-family-base);
+            font-size: 16px;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .filter-tab {
+            padding: 12px 20px;
+            border: 2px solid var(--color-medium-green);
+            border-radius: 12px;
+            background: white;
+            color: var(--color-dark-text);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .filter-tab.active {
+            background: var(--color-deep-green);
+            color: white;
+            border-color: var(--color-deep-green);
+        }
+        
+        .filter-tab:hover {
+            border-color: var(--color-deep-green);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">
+                <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+                <span>Y-Ultimate</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+                <li><a href="match-schedule.html">Schedule</a></li>
+                <li><a href="spirit.html">Spirit Scoring</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="login.html" class="btn btn--primary">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <!-- Tournament Selection Section -->
+    <section class="section" style="padding-top: 100px;">
+        <div class="container">
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Total Tournaments</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">Active Now</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">Registered Teams</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">800+</span>
+                    <span class="stat-label">Players</span>
+                </div>
+            </div>
+
+            <!-- Featured Tournament -->
+            <div class="featured-banner">
+                <h2>🏆 Featured: Summer Championship 2025</h2>
+                <p>📅 July 15-20 • 📍 Hyderabad • 👥 16 Teams Competing</p>
+                <a href="tournament-leaderboard.html?id=1" class="btn btn--large btn--white">View Leaderboard →</a>
+            </div>
+
+            <div class="section-header">
+                <h1>🏆 Browse Tournaments</h1>
+                <p>Explore past winners, active tournaments, and upcoming events</p>
+            </div>
+
+            <!-- Browse Controls -->
+            <div class="browse-controls">
+                <div>
+                    <input type="text" id="searchTournaments" placeholder="🔍 Search tournaments...">
+                    
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="active">Active</button>
+                        <button class="filter-tab" data-filter="upcoming">Upcoming</button>
+                        <button class="filter-tab" data-filter="completed">Past</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tournament Grid -->
+            <div class="tournament-grid">
+                <!-- Active Tournaments -->
+                <a href="tournament-leaderboard.html?id=1" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Summer Championship 2025</h3>
+                        <span class="tournament-badge badge-active">🟢 Active</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 July 15-20, 2025</p>
+                        <p>📍 Hyderabad Sports Complex</p>
+                        <p>👥 16 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Leaderboard →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=4" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Monsoon League 2025</h3>
+                        <span class="tournament-badge badge-active">🟢 Active</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 July 5-20, 2025</p>
+                        <p>📍 Pune Sports Arena</p>
+                        <p>👥 18 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Leaderboard →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=6" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>State Championship 2025</h3>
+                        <span class="tournament-badge badge-active">🟢 Active</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 August 1-10, 2025</p>
+                        <p>📍 Chennai Stadium</p>
+                        <p>👥 32 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Leaderboard →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=7" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Coastal Cup 2025</h3>
+                        <span class="tournament-badge badge-active">🟢 Active</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 July 25-30, 2025</p>
+                        <p>📍 Goa Beach Fields</p>
+                        <p>👥 14 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Leaderboard →</span>
+                    </div>
+                </a>
+
+                <!-- Upcoming Tournaments -->
+                <a href="tournament-leaderboard.html?id=2" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Spring Invitational 2025</h3>
+                        <span class="tournament-badge badge-upcoming">⏳ Upcoming</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 September 10-12, 2025</p>
+                        <p>📍 Bangalore Stadium</p>
+                        <p>👥 12 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Details →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=5" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Autumn Open 2025</h3>
+                        <span class="tournament-badge badge-upcoming">⏳ Upcoming</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 September 15-20, 2025</p>
+                        <p>📍 Delhi Sports Complex</p>
+                        <p>👥 22 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Details →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=8" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>National Finals 2025</h3>
+                        <span class="tournament-badge badge-upcoming">⏳ Upcoming</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 November 1-7, 2025</p>
+                        <p>📍 Mumbai Grand Stadium</p>
+                        <p>👥 40 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Details →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=9" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Youth Championship 2025</h3>
+                        <span class="tournament-badge badge-upcoming">⏳ Upcoming</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 October 5-10, 2025</p>
+                        <p>📍 Jaipur Sports City</p>
+                        <p>👥 20 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Details →</span>
+                    </div>
+                </a>
+
+                <!-- Completed Tournaments -->
+                <a href="tournament-leaderboard.html?id=3" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Winter Cup 2024</h3>
+                        <span class="tournament-badge badge-completed">✓ Completed</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 December 5-8, 2024</p>
+                        <p>📍 Mumbai Grounds</p>
+                        <p>👥 20 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Results →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=10" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Spring Cup 2024</h3>
+                        <span class="tournament-badge badge-completed">✓ Completed</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 March 15-20, 2024</p>
+                        <p>📍 Kolkata Stadium</p>
+                        <p>👥 16 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Results →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=11" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Summer Fest 2024</h3>
+                        <span class="tournament-badge badge-completed">✓ Completed</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 June 10-15, 2024</p>
+                        <p>📍 Ahmedabad Fields</p>
+                        <p>👥 24 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Results →</span>
+                    </div>
+                </a>
+
+                <a href="tournament-leaderboard.html?id=12" class="tournament-card">
+                    <div class="tournament-card-header">
+                        <h3>Independence Cup 2024</h3>
+                        <span class="tournament-badge badge-completed">✓ Completed</span>
+                    </div>
+                    <div class="tournament-info">
+                        <p>📅 August 15-18, 2024</p>
+                        <p>📍 New Delhi Stadium</p>
+                        <p>👥 28 Teams</p>
+                    </div>
+                    <div class="tournament-footer">
+                        <span>View Results →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Y-Ultimate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchTournaments');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const tournamentCards = document.querySelectorAll('.tournament-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            tournamentCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Filter tabs
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const filter = tab.dataset.filter;
+                tournamentCards.forEach(card => {
+                    const badge = card.querySelector('.tournament-badge');
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else if (filter === 'active' && badge.classList.contains('badge-active')) {
+                        card.style.display = 'block';
+                    } else if (filter === 'upcoming' && badge.classList.contains('badge-upcoming')) {
+                        card.style.display = 'block';
+                    } else if (filter === 'completed' && badge.classList.contains('badge-completed')) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

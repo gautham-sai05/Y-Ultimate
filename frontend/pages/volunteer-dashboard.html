@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volunteer Dashboard | Y-Ultimate</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/coach-style.css" />
+  
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    .dashboard-title {
+      color: #2d5940;
+      font-weight: 800;
+      font-size: 32px;
+    }
+    .stat-card {
+      transition: transform 0.3s ease;
+      background: white;
+      border: 1px solid #e5e7eb;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .live-match-card {
+      background: white;
+      border-left: 4px solid #dc3545;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .live-badge {
+      background: #dc3545;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../pages/index.html">
+        <img src="../css/icons/logo.png" alt="Y-Ultimate logo" width="36" class="me-2 align-middle" loading="lazy" decoding="async" />
+        Y-Ultimate Volunteer
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <div class="text-end">
+          <span class="fw-semibold d-block" id="volunteerName">Priya Sharma</span>
+          <small class="text-muted">Volunteer</small>
+        </div>
+        <img id="volunteerAvatar" src="../css/icons/coach-profile.png" class="rounded-circle" width="45" height="45" alt="Volunteer avatar" loading="lazy" decoding="async" />
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <h2 class="mb-4 dashboard-title">🙌 Volunteer Dashboard</h2>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <i class="bi bi-clock-history display-4 text-primary mb-2"></i>
+            <h6 class="text-muted mb-2">Hours This Month</h6>
+            <h2 class="fw-bold text-primary">24</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <i class="bi bi-calendar-check display-4 text-success mb-2"></i>
+            <h6 class="text-muted mb-2">Events Attended</h6>
+            <h2 class="fw-bold text-success">8</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <i class="bi bi-trophy display-4 text-warning mb-2"></i>
+            <h6 class="text-muted mb-2">Matches Scored</h6>
+            <h2 class="fw-bold text-warning">15</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <i class="bi bi-star display-4 text-info mb-2"></i>
+            <h6 class="text-muted mb-2">Volunteer Rank</h6>
+            <h2 class="fw-bold text-info">Gold</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Matches Section -->
+    <div id="liveMatchesSection" class="mb-4">
+      <h5 class="section-title mb-3">
+        <i class="bi bi-broadcast me-2"></i>Live Matches
+      </h5>
+      <div class="row g-4" id="liveMatchesList">
+        <div class="col-md-6">
+          <div class="live-match-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="live-badge">🔴 LIVE</span>
+              <small class="text-muted">Field 1 • Started 2:00 PM</small>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="text-center flex-fill">
+                <h4 class="mb-1">Hawks</h4>
+                <h2 class="fw-bold text-primary">12</h2>
+              </div>
+              <div class="text-center px-3">
+                <h5 class="text-muted">VS</h5>
+              </div>
+              <div class="text-center flex-fill">
+                <h4 class="mb-1">Eagles</h4>
+                <h2 class="fw-bold text-primary">10</h2>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100">
+              <i class="bi bi-pencil-square me-2"></i>Update Score
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="live-match-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="live-badge">🔴 LIVE</span>
+              <small class="text-muted">Field 2 • Started 2:30 PM</small>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="text-center flex-fill">
+                <h4 class="mb-1">Phoenix</h4>
+                <h2 class="fw-bold text-primary">8</h2>
+              </div>
+              <div class="text-center px-3">
+                <h5 class="text-muted">VS</h5>
+              </div>
+              <div class="text-center flex-fill">
+                <h4 class="mb-1">Thunder</h4>
+                <h2 class="fw-bold text-primary">8</h2>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100">
+              <i class="bi bi-pencil-square me-2"></i>Update Score
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Matches -->
+    <div class="mb-4">
+      <h5 class="section-title mb-3">
+        <i class="bi bi-calendar-event me-2"></i>Upcoming Matches (Today)
+      </h5>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Match</th>
+                  <th>Venue</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="upcomingMatchesTable">
+                <tr>
+                  <td>4:00 PM</td>
+                  <td><strong>Warriors</strong> vs <strong>Titans</strong></td>
+                  <td>Field 1</td>
+                  <td><span class="badge bg-warning">Starting Soon</span></td>
+                </tr>
+                <tr>
+                  <td>4:30 PM</td>
+                  <td><strong>Dragons</strong> vs <strong>Lions</strong></td>
+                  <td>Field 3</td>
+                  <td><span class="badge bg-secondary">Scheduled</span></td>
+                </tr>
+                <tr>
+                  <td>5:00 PM</td>
+                  <td><strong>Raptors</strong> vs <strong>Falcons</strong></td>
+                  <td>Field 2</td>
+                  <td><span class="badge bg-secondary">Scheduled</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div id="statsSection" class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="bi bi-activity me-2"></i>Recent Activities</h5>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Activity</th>
+                <th>Match/Event</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="recentActivities">
+              <tr>
+                <td>2:15 PM</td>
+                <td>Score Updated</td>
+                <td>Hawks vs Eagles</td>
+                <td>Updated to 12-10</td>
+              </tr>
+              <tr>
+                <td>1:45 PM</td>
+                <td>Attendance Marked</td>
+                <td>Phoenix vs Thunder</td>
+                <td>16 players present</td>
+              </tr>
+              <tr>
+                <td>12:30 PM</td>
+                <td>Match Started</td>
+                <td>Wolves vs Bears</td>
+                <td>Kick-off recorded</td>
+              </tr>
+              <tr>
+                <td>11:00 AM</td>
+                <td>Setup Complete</td>
+                <td>Field 1 Preparation</td>
+                <td>Field ready for matches</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 small text-muted">
+    © 2025 Y-Ultimate | Built with 💚 by Team Null
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

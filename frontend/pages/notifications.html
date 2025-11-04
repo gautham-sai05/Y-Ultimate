@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications | Y-Ultimate Coach</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/coach-style.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container-fluid">
+  <a class="navbar-brand fw-bold d-flex align-items-center" href="coach-dashboard.html">
+  <img src="../css/icons/logo.png" alt="Y-Ultimate logo — youth ultimate coaching" width="60" height="60" class="me-1" loading="lazy" decoding="async">
+        <span class="d-none d-lg-inline">Y-Ultimate Coach</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+            <a class="position-relative nav-link" href="#" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell fs-5"></i>
+              <span id="notifCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notificationDropdown" style="min-width: 330px;">
+              <!-- notifications populated by JS -->
+            </ul>
+          </li>
+
+          <li class="nav-item text-end me-3">
+            <span id="coachNameDisplay" class="fw-semibold d-block">Coach</span>
+            <small class="text-muted d-block">Coach</small>
+          </li>
+
+          <li class="nav-item">
+            <img src="../css/icons/coach-profile.png" class="rounded-circle" width="45" height="45" alt="Silhouette of a person throwing a flying disc inside a green circular emblem with Y-Ultimate text beneath; logo-style image conveying energetic sporty tone" loading="lazy" decoding="async" />
+          </li>
+
+          <li class="nav-item ms-3">
+            <button class="btn btn-outline-secondary btn-sm d-none" id="signOutBtn" onclick="signOut()">Sign Out</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="dashboard-title">Notifications</h2>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-primary" onclick="markAllAsRead()">
+          <i class="bi bi-check-all me-1"></i> Mark All as Read
+        </button>
+        <a href="coach-dashboard.html" class="btn btn-sm btn-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Back
+        </a>
+      </div>
+    </div>
+
+    <!-- Notification Filters -->
+    <div class="mb-3">
+      <div class="btn-group" role="group">
+        <input type="radio" class="btn-check" name="notifFilter" id="allNotif" checked>
+  <label class="btn btn-outline-primary" for="allNotif">All</label>
+
+        <input type="radio" class="btn-check" name="notifFilter" id="unreadNotif">
+  <label class="btn btn-outline-primary" for="unreadNotif">Unread</label>
+
+        <input type="radio" class="btn-check" name="notifFilter" id="readNotif">
+  <label class="btn btn-outline-primary" for="readNotif">Read</label>
+      </div>
+    </div>
+
+    <!-- Notifications List (populated by js/notifications.js) -->
+    <div id="notificationsList" class="list-group">
+      <!-- filled dynamically by scripts -->
+    </div>
+  </main>
+
+  <footer class="text-center py-3 small text-muted">
+    © 2025 Y-Ultimate | Built with 💚 by Team Dark Null
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/notifications.js"></script>
+</body>
+</html>

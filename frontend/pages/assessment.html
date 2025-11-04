@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LSAS Assessment | Y-Ultimate Coach</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/coach-style.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container-fluid">
+          <a class="navbar-brand fw-bold d-flex align-items-center" href="coach-dashboard.html">
+          <img src="../css/icons/logo.png" alt="Y-Ultimate logo — youth ultimate coaching" width="60" height="60" class="me-1" loading="lazy" decoding="async">
+          <span class="d-none d-lg-inline">Y-Ultimate Coach</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item me-3">
+              <a class="position-relative nav-link" href="#" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                <i class="bi bi-bell fs-5" aria-hidden="true"></i>
+                <span id="notifCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" role="status" aria-live="polite" aria-atomic="true">0</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notificationDropdown" style="min-width: 330px;">
+                <!-- notifications populated by JS -->
+              </ul>
+            </li>
+
+          <li class="nav-item text-end me-3">
+            <span id="coachNameDisplay" class="fw-semibold d-block">Coach</span>
+            <small id="coachSubDisplay" class="text-muted d-block"></small>
+          </li>
+
+            <li class="nav-item">
+              <img src="../css/icons/coach-profile.png" class="rounded-circle" width="45" height="45" alt="Silhouette of a person throwing a flying disc inside a green circular emblem with Y-Ultimate text beneath; logo-style image conveying energetic sporty tone" loading="lazy" decoding="async" />
+            </li>
+
+            <li class="nav-item ms-3">
+              <button class="btn btn-outline-secondary btn-sm d-none" id="signOutBtn" onclick="signOut()">Sign Out</button>
+            </li>
+          </ul>
+        </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="dashboard-title">LSAS Assessment</h2>
+      <a href="coach-dashboard.html" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <!-- Assessment Form -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">New Assessment</h5>
+        <form id="lsasForm">
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <label for="childSelect" class="form-label">Select Child</label>
+              <select class="form-select" id="childSelect" required>
+                <option value="">Choose a child...</option>
+                <!-- options will be populated by js/assessment.js -->
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="assessmentDate" class="form-label">Assessment Date</label>
+              <input type="date" class="form-control" id="assessmentDate" required />
+            </div>
+            <div class="col-md-4">
+              <label for="sessionType" class="form-label">Session Type</label>
+              <select class="form-select" id="sessionType">
+                <option value="training">Training Session</option>
+                <option value="tournament">Tournament</option>
+                <option value="workshop">Workshop</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>LSAS Scoring:</strong> Rate each skill from 0 (Not Demonstrated) to 4 (Excellent)
+          </div>
+
+          <!-- LSAS Parameters -->
+          <div class="mb-4">
+            <h6 class="mb-3">Life Skills Assessment</h6>
+
+            <!-- Respect -->
+            <div class="mb-4">
+              <label class="form-label d-flex justify-content-between">
+                <span><strong>Respect</strong> - Shows respect to peers, coaches, and opponents</span>
+                <span class="badge bg-primary" id="respectValue">0</span>
+              </label>
+              <input type="range" class="form-range" min="0" max="4" value="0" id="respectSlider" 
+                     oninput="updateValue('respect')" />
+              <div class="d-flex justify-content-between small text-muted">
+                <span>Not Demonstrated</span>
+                <span>Developing</span>
+                <span>Proficient</span>
+                <span>Advanced</span>
+                <span>Excellent</span>
+              </div>
+            </div>
+
+            <!-- Teamwork -->
+            <div class="mb-4">
+              <label class="form-label d-flex justify-content-between">
+                <span><strong>Teamwork</strong> - Works well with team members</span>
+                <span class="badge bg-primary" id="teamworkValue">0</span>
+              </label>
+              <input type="range" class="form-range" min="0" max="4" value="0" id="teamworkSlider"
+                     oninput="updateValue('teamwork')" />
+              <div class="d-flex justify-content-between small text-muted">
+                <span>Not Demonstrated</span>
+                <span>Developing</span>
+                <span>Proficient</span>
+                <span>Advanced</span>
+                <span>Excellent</span>
+              </div>
+            </div>
+
+            <!-- Fair Play -->
+            <div class="mb-4">
+              <label class="form-label d-flex justify-content-between">
+                <span><strong>Fair Play</strong> - Demonstrates honesty and sportsmanship</span>
+                <span class="badge bg-primary" id="fairplayValue">0</span>
+              </label>
+              <input type="range" class="form-range" min="0" max="4" value="0" id="fairplaySlider"
+                     oninput="updateValue('fairplay')" />
+              <div class="d-flex justify-content-between small text-muted">
+                <span>Not Demonstrated</span>
+                <span>Developing</span>
+                <span>Proficient</span>
+                <span>Advanced</span>
+                <span>Excellent</span>
+              </div>
+            </div>
+
+            <!-- Self-Control -->
+            <div class="mb-4">
+              <label class="form-label d-flex justify-content-between">
+                <span><strong>Self-Control</strong> - Manages emotions and reactions</span>
+                <span class="badge bg-primary" id="selfcontrolValue">0</span>
+              </label>
+              <input type="range" class="form-range" min="0" max="4" value="0" id="selfcontrolSlider"
+                     oninput="updateValue('selfcontrol')" />
+              <div class="d-flex justify-content-between small text-muted">
+                <span>Not Demonstrated</span>
+                <span>Developing</span>
+                <span>Proficient</span>
+                <span>Advanced</span>
+                <span>Excellent</span>
+              </div>
+            </div>
+
+            <!-- Communication -->
+            <div class="mb-4">
+              <label class="form-label d-flex justify-content-between">
+                <span><strong>Communication</strong> - Expresses ideas and listens effectively</span>
+                <span class="badge bg-primary" id="communicationValue">0</span>
+              </label>
+              <input type="range" class="form-range" min="0" max="4" value="0" id="communicationSlider"
+                     oninput="updateValue('communication')" />
+              <div class="d-flex justify-content-between small text-muted">
+                <span>Not Demonstrated</span>
+                <span>Developing</span>
+                <span>Proficient</span>
+                <span>Advanced</span>
+                <span>Excellent</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="mb-3">
+            <label for="assessmentNotes" class="form-label">Additional Notes (Optional)</label>
+            <textarea class="form-control" id="assessmentNotes" rows="3" 
+                      placeholder="Any observations or comments about the child's performance..."></textarea>
+          </div>
+
+          <div class="text-center">
+            <button type="button" class="btn btn-primary btn-lg" onclick="submitAssessment()">
+              <i class="bi bi-check2-circle me-2"></i> Submit Assessment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Recent Assessments -->
+    <div class="card shadow-sm" id="lsasHistoryTable">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Recent Assessments</h5>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Child</th>
+                <th>Respect</th>
+                <th>Teamwork</th>
+                <th>Fair Play</th>
+                <th>Self-Control</th>
+                <th>Communication</th>
+                <th>Avg</th>
+              </tr>
+            </thead>
+            <tbody id="lsasHistoryBody">
+              <!-- assessment history will be populated by js/assessment.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 small text-muted">
+    © 2025 Y-Ultimate | Built with 💚 by Team Dark Null
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/assessment.js"></script>
+</body>
+</html>

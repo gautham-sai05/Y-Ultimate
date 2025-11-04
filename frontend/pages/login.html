@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Y-Ultimate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">
+                <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+                <span>Y-Ultimate</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+                <li><a href="match-schedule.html">Schedule</a></li>
+                <li><a href="spirit.html">Spirit Scoring</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="login.html" class="btn btn--primary">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Left Panel with Image -->
+            <div class="left-panel">
+                <div class="logo-container">
+                    <img src="../images/logo.png" alt="Y-Ultimate Logo" class="login-logo">
+                    <p class="logo-text">Y-Ultimate</p>
+                </div>
+            </div>
+
+            <!-- Right Panel with Form -->
+            <div class="right-panel">
+                <h1 class="welcome-heading">Welcome Back!</h1>
+                
+                <form class="login-form" id="loginForm">
+                    <div class="form-field">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="userType">Login As</label>
+                        <select id="userType" name="userType" required>
+                            <option value="">Select your role</option>
+                            <option value="admin">Admin</option>
+                            <option value="coach">Coach</option>
+                            <option value="player">Player</option>
+                            <option value="sponsor">Sponsor</option>
+                            <option value="volunteer">Volunteer</option>
+                            <option value="Parent">Parent</option>
+                        </select>
+                    </div>
+
+                    <div class="form-helpers">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-signin">Sign In</button>
+
+                    <p class="signup-link">
+                        Don't have an account? <a href="registration.html">Sign up here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login Form Handler - FIXED REDIRECTS
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const userType = document.getElementById('userType').value;
+                
+                // Validate all fields
+                if (!email || !password || !userType) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                console.log('Login attempt:', { email, userType }); // Debug log
+                
+                // Store user data in localStorage
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userType', userType);
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userName', email.split('@')[0]); // Simple name from email
+                
+                // Show success message
+                alert(`✅ Login successful!\n\nWelcome back!\nLogging in as: ${userType}`);
+                
+                // Redirect based on user type - FIXED PATHS
+                setTimeout(() => {
+                    switch(userType) {
+                        case 'admin':
+                            console.log('Redirecting to ../tournament-dashboard.html');
+                            window.location.href = 'tournament-dashboard.html';
+                            break;
+                        case 'coach':
+                            console.log('Redirecting to coach-dashboard.html');
+                            window.location.href = 'coach-dashboard.html';
+                            break;
+                        case 'player':
+                            console.log('Redirecting to player.html');
+                            window.location.href = 'player.html';
+                            break;
+                        case 'sponsor':
+                            console.log('Redirecting to sponsor-dashboard.html');
+                            window.location.href = 'sponsor-dashboard.html';
+                            break;
+                        case 'volunteer':
+                            console.log('Redirecting to volunteer-dashboard.html');
+                            window.location.href = 'volunteer-dashboard.html';
+                            break;
+                        case 'Parent':
+                            console.log('Redirecting to Parent-dashboard.html');
+                            window.location.href = 'parent-dashboard.html';
+                            break;
+                        default:
+                            alert('Please select a valid role');
+                            return;
+                    }
+                }, 500); // Small delay to show alert
+            });
+        });
+    </script>
+</body>
+</html>

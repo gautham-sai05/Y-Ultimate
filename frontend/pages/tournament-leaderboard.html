@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Leaderboard - Y-Ultimate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;500;600;700&family=Roboto+Flex:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">
+                <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+                <span>Y-Ultimate</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+                <li><a href="match-schedule.html">Schedule</a></li>
+                <li><a href="spirit.html">Spirit Scoring</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="login.html" class="btn btn--primary">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Tournament Header -->
+    <section class="leaderboard-header">
+        <div class="container">
+            <a href="leaderboard.html" class="back-link">← Back to Tournaments</a>
+            <h1 class="tournament-title">🏆 Summer Championship 2025</h1>
+            <p class="tournament-meta">July 15-20, 2025 • Hyderabad Sports Complex</p>
+            
+            <!-- Filters -->
+            <div class="leaderboard-filters">
+                <div class="filter-group">
+                    <button class="filter-btn active">All Teams</button>
+                    <button class="filter-btn">Mixed</button>
+                    <button class="filter-btn">Open</button>
+                    <button class="filter-btn">Women's</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" placeholder="Search team..." id="teamSearch">
+                </div>
+                <div class="sort-group">
+                    <select id="sortBy" class="sort-select">
+                        <option value="points">Sort by Points</option>
+                        <option value="wins">Sort by Wins</option>
+                        <option value="spirit">Sort by Spirit Score</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Podium Section (Top 3) -->
+    <section class="podium-section">
+        <div class="container">
+            <div class="podium">
+                <!-- 2nd Place (Left) -->
+                <div class="podium-card podium-second">
+                    <div class="medal">🥈</div>
+                    <div class="rank-number">2</div>
+                    <img src="https://ui-avatars.com/api/?name=Flying+Disc&background=98C9A3&color=fff&size=120" alt="Team Avatar" class="team-avatar">
+                    <h3 class="team-name">Flying Disc Warriors</h3>
+                    <p class="team-username">@flyingdisc</p>
+                    <div class="team-stats">
+                        <div class="stat">
+                            <span class="stat-value">145</span>
+                            <span class="stat-label">Points</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">12-3</span>
+                            <span class="stat-label">W-L</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">15</span>
+                            <span class="stat-label">Games</span>
+                        </div>
+                    </div>
+                    <span class="trend-indicator">↑ +2</span>
+                </div>
+
+                <!-- 1st Place (Center/Highest) -->
+                <div class="podium-card podium-first">
+                    <div class="medal">🥇</div>
+                    <div class="rank-number">1</div>
+                    <img src="https://ui-avatars.com/api/?name=Thunder+Bolts&background=77BFA3&color=fff&size=140" alt="Team Avatar" class="team-avatar team-avatar-large">
+                    <h3 class="team-name">ThunderBolt23</h3>
+                    <p class="team-username">@thunderbolt</p>
+                    <div class="team-stats">
+                        <div class="stat">
+                            <span class="stat-value">150</span>
+                            <span class="stat-label">Points</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">14-1</span>
+                            <span class="stat-label">W-L</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">15</span>
+                            <span class="stat-label">Games</span>
+                        </div>
+                    </div>
+                    <span class="trend-indicator">↑ +1</span>
+                </div>
+
+                <!-- 3rd Place (Right) -->
+                <div class="podium-card podium-third">
+                    <div class="medal">🥉</div>
+                    <div class="rank-number">3</div>
+                    <img src="https://ui-avatars.com/api/?name=Ultimate+Ninjas&background=BFD8BD&color=fff&size=120" alt="Team Avatar" class="team-avatar">
+                    <h3 class="team-name">Ultimate Ninjas</h3>
+                    <p class="team-username">@ultimateninjas</p>
+                    <div class="team-stats">
+                        <div class="stat">
+                            <span class="stat-value">142</span>
+                            <span class="stat-label">Points</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">11-4</span>
+                            <span class="stat-label">W-L</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">15</span>
+                            <span class="stat-label">Games</span>
+                        </div>
+                    </div>
+                    <span class="trend-indicator">↓ -1</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Awards Section -->
+    <section class="special-awards-section">
+        <div class="container">
+            <h2 class="section-title">🌟 Special Awards</h2>
+            <div class="awards-grid">
+                <div class="award-card">
+                    <div class="award-icon">🤝</div>
+                    <h3>Best Spirit Score</h3>
+                    <p class="award-team">Team Phoenix</p>
+                    <span class="award-value">Spirit: 9.8/10</span>
+                </div>
+                <div class="award-card">
+                    <div class="award-icon">⚡</div>
+                    <h3>Most Improved</h3>
+                    <p class="award-team">Disc Defenders</p>
+                    <span class="award-value">+5 ranks</span>
+                </div>
+                <div class="award-card">
+                    <div class="award-icon">🎯</div>
+                    <h3>Fair Play Award</h3>
+                    <p class="award-team">Sky Strikers</p>
+                    <span class="award-value">0 penalties</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Rankings List -->
+    <section class="rankings-section">
+        <div class="container">
+            <h2 class="section-title">📊 Full Rankings</h2>
+            <div class="rankings-list" id="rankingsList">
+                <!-- Ranking Card 4 -->
+                <div class="ranking-card">
+                    <span class="rank">4</span>
+                    <img src="https://ui-avatars.com/api/?name=Team+Phoenix&background=DDE7C7&color=2d5940&size=60" alt="Avatar" class="ranking-avatar">
+                    <div class="ranking-info">
+                        <h4 class="ranking-name">Team Phoenix</h4>
+                        <span class="ranking-username">@teamphoenix</span>
+                    </div>
+                    <div class="ranking-stats">
+                        <span class="stat-item"><strong>138</strong> pts</span>
+                        <span class="stat-item"><strong>10-5</strong> W-L</span>
+                        <span class="stat-item"><strong>15</strong> games</span>
+                        <span class="trend">→ 0</span>
+                    </div>
+                </div>
+
+                <!-- Ranking Card 5 -->
+                <div class="ranking-card">
+                    <span class="rank">5</span>
+                    <img src="https://ui-avatars.com/api/?name=Disc+Defenders&background=EDEEC9&color=2d5940&size=60" alt="Avatar" class="ranking-avatar">
+                    <div class="ranking-info">
+                        <h4 class="ranking-name">Disc Defenders</h4>
+                        <span class="ranking-username">@discdefenders</span>
+                    </div>
+                    <div class="ranking-stats">
+                        <span class="stat-item"><strong>135</strong> pts</span>
+                        <span class="stat-item"><strong>9-6</strong> W-L</span>
+                        <span class="stat-item"><strong>15</strong> games</span>
+                        <span class="trend trend-up">↑ +3</span>
+                    </div>
+                </div>
+
+                <!-- Ranking Card 6 -->
+                <div class="ranking-card">
+                    <span class="rank">6</span>
+                    <img src="https://ui-avatars.com/api/?name=Sky+Strikers&background=98C9A3&color=fff&size=60" alt="Avatar" class="ranking-avatar">
+                    <div class="ranking-info">
+                        <h4 class="ranking-name">Sky Strikers</h4>
+                        <span class="ranking-username">@skystrikers</span>
+                    </div>
+                    <div class="ranking-stats">
+                        <span class="stat-item"><strong>130</strong> pts</span>
+                        <span class="stat-item"><strong>9-6</strong> W-L</span>
+                        <span class="stat-item"><strong>15</strong> games</span>
+                        <span class="trend trend-down">↓ -2</span>
+                    </div>
+                </div>
+
+                <!-- Add more ranking cards as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Y-Ultimate. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/leaderboard.js"></script>
+</body>
+</html>

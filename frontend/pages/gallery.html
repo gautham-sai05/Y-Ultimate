@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery - Y-Ultimate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Gallery Specific Styles */
+        body {
+            background: linear-gradient(to bottom, #f8faf7, #e8f5e9);
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 32px 60px;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .gallery-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--color-forest-dark);
+            margin-bottom: 12px;
+        }
+
+        .gallery-header p {
+            font-size: 20px;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        /* Filter Controls */
+        .gallery-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 24px;
+            background: white;
+            border: 2px solid var(--color-border);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--color-mint);
+            transform: translateY(-2px);
+        }
+
+        .filter-tab.active {
+            background: var(--color-mint);
+            color: white;
+            border-color: var(--color-mint);
+        }
+
+        .search-upload {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-input {
+            padding: 10px 20px;
+            border: 2px solid var(--color-border);
+            border-radius: 50px;
+            font-family: var(--font-family-base);
+            font-size: 15px;
+            width: 250px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-mint);
+        }
+
+        .upload-btn {
+            padding: 10px 28px;
+            background: var(--color-mint);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .upload-btn:hover {
+            background: var(--color-sage);
+            transform: translateY(-2px);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(26, 77, 46, 0.08);
+            background: white;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(26, 77, 46, 0.15);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(26, 77, 46, 0.9), transparent);
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .gallery-meta {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .gallery-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 12px;
+            background: var(--color-mint);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-info {
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 12px 12px;
+            margin-top: -4px;
+        }
+
+        .lightbox-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-forest-dark);
+            margin-bottom: 8px;
+        }
+
+        .lightbox-description {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+            background: var(--color-mint);
+            color: white;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--color-mint);
+            color: white;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Upload Modal */
+        .upload-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .upload-modal.active {
+            display: flex;
+        }
+
+        .upload-modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .upload-modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--color-forest-dark);
+            margin-bottom: 24px;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--color-border);
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 24px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--color-mint);
+            background: #f0f9f6;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-forest);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-family: var(--font-family-base);
+            font-size: 15px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-mint);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .btn-cancel {
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            padding: 12px 24px;
+            background: var(--color-mint);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background: var(--color-sage);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .empty-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-header h1 {
+                font-size: 36px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 16px;
+            }
+
+            .search-upload {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">
+                <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+                <span>Y-Ultimate</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+                <li><a href="match-schedule.html">Schedule</a></li>
+                <li><a href="spirit.html">Spirit Scoring</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="login.html" class="btn btn--primary">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="gallery-container">
+        <!-- Header -->
+        <div class="gallery-header">
+            <h1>Photo Gallery</h1>
+            <p>Capturing the best moments from our tournaments</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="gallery-controls">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Photos</button>
+                <button class="filter-tab" data-filter="tournament">Tournaments</button>
+                <button class="filter-tab" data-filter="action">Action Shots</button>
+                <button class="filter-tab" data-filter="team">Team Photos</button>
+                <button class="filter-tab" data-filter="celebration">Celebrations</button>
+            </div>
+            <div class="search-upload">
+                <input type="text" class="search-input" placeholder="Search photos..." id="searchInput">
+                <button class="upload-btn" id="uploadBtn">📤 Upload Photo</button>
+            </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Tournament Photos -->
+            <div class="gallery-item" data-category="tournament" data-index="0">
+                <img src="https://thesoutherneronline.com/wp-content/uploads/2019/08/Screen-Shot-2019-08-23-at-1.24.16-PM-900x672.png" alt="Tournament" class="gallery-image">
+                <div class="gallery-badge">Tournament</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Summer Championship 2025</div>
+                    <div class="gallery-meta">📅 March 15, 2025 • 📍 Hyderabad</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="action" data-index="1">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ67yFok2xYCbctoMNYryJCJ4d56pkKZHyW_Q&s" alt="Action" class="gallery-image">
+                <div class="gallery-badge">Action</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Mid-Air Catch</div>
+                    <div class="gallery-meta">📅 March 14, 2025 • 📍 Field 1</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="team" data-index="2">
+                <img src="https://d36m266ykvepgv.cloudfront.net/uploads/media/SZ0YZ1uNVJ/s-960-720/24294041-1543861209035952-5575202604449008181-n.jpg" alt="Team" class="gallery-image">
+                <div class="gallery-badge">Team</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Hawks Team Photo</div>
+                    <div class="gallery-meta">📅 March 13, 2025 • 🏆 Champions</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="celebration" data-index="3">
+                <img src="https://th-i.thgim.com/public/incoming/feqf8g/article69593969.ece/alternates/LANDSCAPE_1200/Kerala%20Womens%20Ultimate%20Frisbee%20team.jpg" alt="Celebration" class="gallery-image">
+                <div class="gallery-badge">Celebration</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Victory Celebration</div>
+                    <div class="gallery-meta">📅 March 15, 2025 • 🎉 Finals</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="action" data-index="4">
+                <img src="https://media.assettype.com/knocksense%2F2023-03%2F8814e542-ff61-4b6b-9970-f74d610e5199%2F736C8B4F_38DD_42DA_8A06_72447039606F.jpeg?w=640&auto=format%2Ccompress" alt="Action" class="gallery-image">
+                <div class="gallery-badge">Action</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Perfect Throw</div>
+                    <div class="gallery-meta">📅 March 14, 2025 • ⚡ Semi-Finals</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="tournament" data-index="5">
+                <img src="https://th-i.thgim.com/public/incoming/feqf8g/article69593969.ece/alternates/LANDSCAPE_1200/Kerala%20Womens%20Ultimate%20Frisbee%20team.jpg alt="Tournament" class="gallery-image">
+                <div class="gallery-badge">Tournament</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Opening Ceremony</div>
+                    <div class="gallery-meta">📅 March 12, 2025 • 🎊 Day 1</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="team" data-index="6">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsF6PUS8OscLDJEAP8VfGNqNqM9CskjPk37g&s" alt="Team" class="gallery-image">
+                <div class="gallery-badge">Team</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Eagles Huddle</div>
+                    <div class="gallery-meta">📅 March 13, 2025 • 🔥 Pre-Match</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="action" data-index="7">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsF6PUS8OscLDJEAP8VfGNqNqM9CskjPk37g&s" alt="Action" class="gallery-image">
+                <div class="gallery-badge">Action</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Defensive Block</div>
+                    <div class="gallery-meta">📅 March 14, 2025 • 🛡️ Quarter-Finals</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="celebration" data-index="8">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsF6PUS8OscLDJEAP8VfGNqNqM9CskjPk37g&s" alt="Celebration" class="gallery-image">
+                <div class="gallery-badge">Celebration</div>
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Trophy Presentation</div>
+                    <div class="gallery-meta">📅 March 15, 2025 • 🏆 Awards</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="closeLightbox">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="prevImage">‹</button>
+        <button class="lightbox-nav lightbox-next" id="nextImage">›</button>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+            <div class="lightbox-info">
+                <div class="lightbox-title" id="lightboxTitle"></div>
+                <div class="lightbox-description" id="lightboxDescription"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-modal-content">
+            <h2 class="upload-modal-title">📤 Upload Photo</h2>
+            <form id="uploadForm">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Photo Title</label>
+                    <input type="text" class="form-input" placeholder="e.g., Championship Final Match" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-input" required>
+                        <option value="">Select category</option>
+                        <option value="tournament">Tournament</option>
+                        <option value="action">Action Shots</option>
+                        <option value="team">Team Photos</option>
+                        <option value="celebration">Celebrations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input" placeholder="Date, location, event...">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelUpload">Cancel</button>
+                    <button type="submit" class="btn-submit">Upload Photo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Y-Ultimate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Gallery filtering
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const filter = tab.dataset.filter;
+                
+                // Filter items
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            galleryItems.forEach(item => {
+                const title = item.querySelector('.gallery-title').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxDescription = document.getElementById('lightboxDescription');
+        let currentIndex = 0;
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentIndex = parseInt(item.dataset.index);
+                showLightbox(item);
+            });
+        });
+
+        function showLightbox(item) {
+            const img = item.querySelector('.gallery-image');
+            const title = item.querySelector('.gallery-title');
+            const meta = item.querySelector('.gallery-meta');
+            
+            lightboxImage.src = img.src;
+            lightboxTitle.textContent = title.textContent;
+            lightboxDescription.textContent = meta.textContent;
+            lightbox.classList.add('active');
+        }
+
+        document.getElementById('closeLightbox').addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        document.getElementById('prevImage').addEventListener('click', () => {
+            const visibleItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+            currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+            showLightbox(visibleItems[currentIndex]);
+        });
+
+        document.getElementById('nextImage').addEventListener('click', () => {
+            const visibleItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+            currentIndex = (currentIndex + 1) % visibleItems.length;
+            showLightbox(visibleItems[currentIndex]);
+        });
+
+        // Close lightbox on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
+
+        // Upload modal
+        const uploadModal = document.getElementById('uploadModal');
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            uploadModal.classList.add('active');
+        });
+
+        document.getElementById('cancelUpload').addEventListener('click', () => {
+            uploadModal.classList.remove('active');
+        });
+
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('✅ Photo uploaded successfully!');
+            uploadModal.classList.remove('active');
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                } else if (e.key === 'ArrowLeft') {
+                    document.getElementById('prevImage').click();
+                } else if (e.key === 'ArrowRight') {
+                    document.getElementById('nextImage').click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

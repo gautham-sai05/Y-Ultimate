@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Dashboard - Y-Ultimate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* Player Dashboard Styles */
+        body {
+            background: linear-gradient(to bottom, #f8faf7, #e8f5e9);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 32px 60px;
+        }
+
+        .player-header {
+            background: linear-gradient(135deg, #1a5940, #2d7556);
+            padding: 40px;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .player-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .player-info h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+        }
+
+        .player-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .player-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid var(--color-border);
+            box-shadow: 0 2px 8px rgba(26, 77, 46, 0.08);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(26, 77, 46, 0.12);
+            border-color: var(--color-primary);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--color-primary);
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        /* Sections */
+        .section-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            border: 2px solid var(--color-border);
+            box-shadow: 0 4px 12px rgba(26, 77, 46, 0.08);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--color-forest-dark);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Available Tournaments */
+        .tournament-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tournament-item {
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tournament-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 12px rgba(26, 77, 46, 0.1);
+        }
+
+        .tournament-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .tournament-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-forest-dark);
+        }
+
+        .join-btn {
+            padding: 8px 20px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .join-btn:hover {
+            background: var(--color-sage);
+            transform: translateY(-2px);
+        }
+
+        .join-btn.joined {
+            background: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .tournament-details {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .tournament-detail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* My Tournaments */
+        .my-tournaments-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .my-tournament-card {
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .my-tournament-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 12px rgba(26, 77, 46, 0.1);
+        }
+
+        .my-tournament-info h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-forest-dark);
+            margin: 0 0 8px 0;
+        }
+
+        .my-tournament-meta {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            display: flex;
+            gap: 16px;
+        }
+
+        .view-details-btn {
+            padding: 10px 24px;
+            background: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-details-btn:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* Performance Charts */
+        .charts-section {
+            grid-column: 1 / -1;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid var(--color-border);
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-forest-dark);
+            margin-bottom: 20px;
+        }
+
+        /* Attendance Section */
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th {
+            text-align: left;
+            padding: 12px;
+            background: var(--color-background);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: var(--color-forest-dark);
+        }
+
+        .attendance-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 14px;
+        }
+
+        .attendance-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .attendance-badge.present {
+            background: rgba(33, 128, 141, 0.15);
+            color: var(--color-primary);
+        }
+
+        .attendance-badge.absent {
+            background: rgba(192, 21, 47, 0.15);
+            color: var(--color-error, #C0152F);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .player-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .player-header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">
+                <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+                <span>Y-Ultimate</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+                <li><a href="match-schedule.html">Schedule</a></li>
+                <li><a href="spirit.html">Spirit Scoring</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="player-dashboard.html" class="active">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Player Header -->
+        <div class="player-header">
+            <img src="https://i.pravatar.cc/150?img=12" alt="Player Avatar" class="player-avatar">
+            <div class="player-info">
+                <h1>Welcome back, Alex Martinez! 👋</h1>
+                <div class="player-meta">
+                    <span>👥 Team: Hawks</span>
+                    <span>🎯 Position: Handler</span>
+                    <span>📅 Joined: Jan 2024</span>
+                    <span>🏆 Tournaments: 8</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-label">Tournaments</div>
+                <div class="stat-value">8</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-label">Matches Played</div>
+                <div class="stat-value">42</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-label">Goals Scored</div>
+                <div class="stat-value">128</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🤝</div>
+                <div class="stat-label">Assists</div>
+                <div class="stat-value">95</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✨</div>
+                <div class="stat-label">Avg Spirit Score</div>
+                <div class="stat-value">18.2</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Available Tournaments -->
+            <div class="section-card">
+                <h2 class="section-title">🏆 Available Tournaments</h2>
+                <div class="tournament-list">
+                    <div class="tournament-item">
+                        <div class="tournament-header">
+                            <div>
+                                <div class="tournament-name">Summer Championship 2025</div>
+                            </div>
+                            <button class="join-btn">Join Now</button>
+                        </div>
+                        <div class="tournament-details">
+                            <div class="tournament-detail">📅 July 15-20, 2025</div>
+                            <div class="tournament-detail">📍 Hyderabad Sports Complex</div>
+                            <div class="tournament-detail">👥 24/32 teams</div>
+                        </div>
+                    </div>
+
+                    <div class="tournament-item">
+                        <div class="tournament-header">
+                            <div>
+                                <div class="tournament-name">State Championship 2025</div>
+                            </div>
+                            <button class="join-btn">Join Now</button>
+                        </div>
+                        <div class="tournament-details">
+                            <div class="tournament-detail">📅 August 1-10, 2025</div>
+                            <div class="tournament-detail">📍 Pune Stadium</div>
+                            <div class="tournament-detail">👥 18/24 teams</div>
+                        </div>
+                    </div>
+
+                    <div class="tournament-item">
+                        <div class="tournament-header">
+                            <div>
+                                <div class="tournament-name">Monsoon League 2025</div>
+                            </div>
+                            <button class="join-btn joined">✓ Joined</button>
+                        </div>
+                        <div class="tournament-details">
+                            <div class="tournament-detail">📅 July 5-20, 2025</div>
+                            <div class="tournament-detail">📍 Pune Stadium</div>
+                            <div class="tournament-detail">👥 32/32 teams</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Tournaments & Attendance -->
+            <div style="display: flex; flex-direction: column; gap: 32px;">
+                <!-- My Active Tournaments -->
+                <div class="section-card">
+                    <h2 class="section-title">🎯 My Active Tournaments</h2>
+                    <div class="my-tournaments-grid">
+                        <div class="my-tournament-card">
+                            <div class="my-tournament-info">
+                                <h4>Monsoon League 2025</h4>
+                                <div class="my-tournament-meta">
+                                    <span>6 matches</span>
+                                    <span>4 W - 2 L</span>
+                                </div>
+                            </div>
+                            <button class="view-details-btn">View</button>
+                        </div>
+
+                        <div class="my-tournament-card">
+                            <div class="my-tournament-info">
+                                <h4>Winter Cup 2024</h4>
+                                <div class="my-tournament-meta">
+                                    <span>8 matches</span>
+                                    <span>6 W - 2 L</span>
+                                </div>
+                            </div>
+                            <button class="view-details-btn">View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Attendance -->
+                <div class="section-card">
+                    <h2 class="section-title">📋 Recent Attendance</h2>
+                    <table class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Event</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nov 4, 2025</td>
+                                <td>Practice Session</td>
+                                <td><span class="attendance-badge present">Present</span></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 3, 2025</td>
+                                <td>Match vs Eagles</td>
+                                <td><span class="attendance-badge present">Present</span></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 1, 2025</td>
+                                <td>Team Meeting</td>
+                                <td><span class="attendance-badge absent">Absent</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 30, 2025</td>
+                                <td>Practice Session</td>
+                                <td><span class="attendance-badge present">Present</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Charts -->
+        <div class="section-card charts-section">
+            <h2 class="section-title">📈 Performance Analytics</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">Goals & Assists (Last 6 Months)</h3>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Match Outcomes</h3>
+                    <canvas id="outcomeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Spirit Scores</h3>
+                    <canvas id="spiritChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Y-Ultimate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Performance Chart (Goals & Assists)
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(performanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['June', 'July', 'Aug', 'Sept', 'Oct', 'Nov'],
+                datasets: [{
+                    label: 'Goals',
+                    data: [18, 22, 25, 20, 23, 20],
+                    borderColor: '#77BFA3',
+                    backgroundColor: 'rgba(119, 191, 163, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Assists',
+                    data: [12, 15, 18, 14, 19, 17],
+                    borderColor: '#4a7c59',
+                    backgroundColor: 'rgba(74, 124, 89, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Outcome Chart (Wins/Losses)
+        const outcomeCtx = document.getElementById('outcomeChart').getContext('2d');
+        new Chart(outcomeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Wins', 'Losses'],
+                datasets: [{
+                    data: [28, 14],
+                    backgroundColor: ['#77BFA3', '#e8b86d']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Spirit Scores Chart
+        const spiritCtx = document.getElementById('spiritChart').getContext('2d');
+        new Chart(spiritCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Rules', 'Fouls', 'Fair Play', 'Attitude', 'Self-Control'],
+                datasets: [{
+                    label: 'Average Score (out of 4)',
+                    data: [3.8, 3.6, 3.9, 3.7, 3.5],
+                    backgroundColor: '#77BFA3'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 4
+                    }
+                }
+            }
+        });
+
+        // Join button interactions
+        document.querySelectorAll('.join-btn').forEach(btn => {
+            if (!btn.classList.contains('joined')) {
+                btn.addEventListener('click', function() {
+                    this.classList.add('joined');
+                    this.innerHTML = '✓ Joined';
+                    alert('Successfully joined tournament!');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

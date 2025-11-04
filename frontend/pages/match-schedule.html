@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Match Schedule | Y-Ultimate</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/coach-style.css" />
+  <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="logo">
+            <img src="../images/logo.png" alt="Y-Ultimate Logo" class="logo-icon">
+            <span>Y-Ultimate</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+            <li><a href="match-schedule.html">Schedule</a></li>
+            <li><a href="spirit.html">Spirit Scoring</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="login.html" class="btn btn--primary">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+  <main class="container py-4">
+    <div class="text-center mb-4">
+      <h2 class="dashboard-title">Match Schedule</h2>
+      <p class="text-muted">View upcoming Ultimate Frisbee tournaments and matches</p>
+    </div>
+
+    <!-- Calendar Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">
+          <i class="bi bi-calendar3 me-2"></i>Tournament Calendar
+        </h5>
+        <div id="calendar"></div>
+      </div>
+    </div>
+
+    <!-- Upcoming Matches Cards -->
+    <div class="mb-4">
+      <h5 class="section-title mb-3">
+        <i class="bi bi-trophy me-2"></i>Upcoming Matches
+      </h5>
+      <div class="row g-4" id="upcomingMatches">
+        <!-- Matches will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Match Details Modal -->
+    <div class="modal fade" id="matchModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="matchModalTitle">Match Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="matchModalBody">
+            <!-- Match details will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 small text-muted">
+    © 2025 Y-Ultimate | Built with 💚 by Team Null
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/match-schedule.js"></script>
+</body>
+</html>

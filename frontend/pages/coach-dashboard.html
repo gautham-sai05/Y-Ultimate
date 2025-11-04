@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coach Dashboard | Y-Ultimate</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/coach-style.css" />
+  
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    .dashboard-title {
+      color: #2d5940;
+      font-weight: 800;
+      font-size: 32px;
+    }
+    .stat-card {
+      transition: transform 0.3s ease;
+      background: white;
+      border: 1px solid #e5e7eb;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .stat-card h2 {
+      color: #2d5940;
+    }
+    .section-title {
+      color: #2d5940;
+      font-weight: 700;
+    }
+    .chart-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="coach-dashboard.html">
+      <img src="../css/icons/logo.png" alt="Y-Ultimate logo" width="60" height="60" class="me-1" loading="lazy" decoding="async">
+      <span class="d-none d-lg-inline">Y-Ultimate Coach</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item text-end me-3">
+          <span id="coachNameDisplay" class="fw-semibold d-block">Coach Ramesh</span>
+          <small id="coachSubDisplay" class="text-muted d-block">Physical Education</small>
+        </li>
+        <li class="nav-item">
+          <img src="../css/icons/coach-profile.png" class="rounded-circle" width="45" height="45" alt="Coach profile" loading="lazy" decoding="async" />
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <main class="container py-4">
+    <h2 class="mb-4 dashboard-title">👨‍🏫 Coach Dashboard</h2>
+
+    <!-- Stat Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <h6 class="text-muted mb-2"><i class="bi bi-calendar-event me-2"></i>Upcoming Sessions</h6>
+            <h2 id="upcomingSessions" class="fw-bold">5</h2>
+            <small class="text-muted">This week</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <h6 class="text-muted mb-2"><i class="bi bi-check-circle me-2"></i>Weekly Attendance</h6>
+            <h2 id="avgAttendance" class="fw-bold text-success">92%</h2>
+            <small class="text-muted">Average</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <h6 class="text-muted mb-2"><i class="bi bi-people me-2"></i>Children Tracked</h6>
+            <h2 id="childrenTracked" class="fw-bold text-primary">48</h2>
+            <small class="text-muted">Active students</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm stat-card">
+          <div class="card-body text-center">
+            <h6 class="text-muted mb-2"><i class="bi bi-house-heart me-2"></i>Home Visits</h6>
+            <h2 id="homeVisits" class="fw-bold text-warning">12</h2>
+            <small class="text-muted">This month</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-4">
+      <h5 class="section-title mb-3"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="attendance.html" class="btn btn-primary">
+          <i class="bi bi-check2-square me-1"></i> Mark Attendance
+        </a>
+        <a href="assessment.html" class="btn btn-success">
+          <i class="bi bi-clipboard2-check me-1"></i> LSAS Assessment
+        </a>
+        <a href="children-list.html" class="btn btn-secondary">
+          <i class="bi bi-people me-1"></i> View Children
+        </a>
+        <a href="home-visits.html" class="btn btn-info">
+          <i class="bi bi-house-heart me-1"></i> Log Home Visit
+        </a>
+        <a href="reports.html" class="btn btn-warning">
+          <i class="bi bi-bar-chart me-1"></i> View Reports
+        </a>
+      </div>
+    </div>
+
+    <!-- CHARTS SECTION -->
+    <div class="mb-4">
+      <h5 class="section-title mb-3">📊 Analytics</h5>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="chart-card">
+            <h6 class="text-center mb-3">Attendance Overview</h6>
+            <canvas id="attendanceChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="chart-card">
+            <h6 class="text-center mb-3">LSAS Progress</h6>
+            <canvas id="lsasChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="chart-card">
+            <h6 class="text-center mb-3">Monthly Activity</h6>
+            <canvas id="activityChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Games -->
+    <div class="mb-4">
+      <h5 class="section-title mb-3"><i class="bi bi-trophy me-2"></i>Upcoming Games</h5>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Opponent</th>
+                  <th>Location</th>
+                  <th>Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="upcomingGames">
+                <tr>
+                  <td>Nov 10, 2025</td>
+                  <td><strong>Hawks</strong> vs <strong>Eagles</strong></td>
+                  <td>Hyderabad Sports Complex</td>
+                  <td>4:00 PM</td>
+                  <td><span class="badge bg-warning">Upcoming</span></td>
+                </tr>
+                <tr>
+                  <td>Nov 12, 2025</td>
+                  <td><strong>Phoenix</strong> vs <strong>Thunder</strong></td>
+                  <td>Field 2, Jubilee Hills</td>
+                  <td>2:30 PM</td>
+                  <td><span class="badge bg-warning">Upcoming</span></td>
+                </tr>
+                <tr>
+                  <td>Nov 15, 2025</td>
+                  <td><strong>Warriors</strong> vs <strong>Titans</strong></td>
+                  <td>Main Stadium</td>
+                  <td>10:00 AM</td>
+                  <td><span class="badge bg-secondary">Scheduled</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="bi bi-clock-history me-2"></i>Recent Activities</h5>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Activity</th>
+                <th>Child</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recentActivities">
+              <tr>
+                <td>Nov 4, 2025</td>
+                <td>LSAS Assessment Completed</td>
+                <td>Rahul Kumar</td>
+                <td><span class="badge bg-success">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Nov 3, 2025</td>
+                <td>Attendance Marked</td>
+                <td>Priya Sharma</td>
+                <td><span class="badge bg-success">Present</span></td>
+              </tr>
+              <tr>
+                <td>Nov 2, 2025</td>
+                <td>Home Visit Logged</td>
+                <td>Amit Patel</td>
+                <td><span class="badge bg-info">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Nov 1, 2025</td>
+                <td>Skills Practice Session</td>
+                <td>Group - 15 students</td>
+                <td><span class="badge bg-primary">Conducted</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 small text-muted">
+    © 2025 Y-Ultimate | Built with 💚 by Team Null
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Attendance Chart (Doughnut)
+      const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+      new Chart(attendanceCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Present', 'Absent', 'Late'],
+          datasets: [{
+            data: [88, 8, 4],
+            backgroundColor: ['#77BFA3', '#98C9A3', '#BFD8BD'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { padding: 10, font: { size: 11 } }
+            }
+          }
+        }
+      });
+
+      // LSAS Chart (Bar)
+      const lsasCtx = document.getElementById('lsasChart').getContext('2d');
+      new Chart(lsasCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+          datasets: [{
+            label: 'Avg Score',
+            data: [72, 78, 82, 85],
+            backgroundColor: '#77BFA3',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      // Activity Chart (Line)
+      const activityCtx = document.getElementById('activityChart').getContext('2d');
+      new Chart(activityCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Sessions',
+            data: [18, 22, 25, 28, 30, 32],
+            borderColor: '#77BFA3',
+            backgroundColor: 'rgba(119, 191, 163, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 10 } }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

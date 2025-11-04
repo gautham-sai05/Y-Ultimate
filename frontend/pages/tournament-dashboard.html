@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Dashboard - Y-Ultimate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/tournament-dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">⚡ Y-Ultimate</a>
+        <ul class="navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="leaderboard.html">Tournaments</a></li>
+<li><a href="live-scores.html">Live Scores</a></li>
+            <li><a href="match-schedule.html">Schedule</a></li>
+            <li><a href="spirit.html">Spirit Scoring</a></li>
+            <li class="user-profile">
+                <button class="profile-btn" id="profileBtn">
+                    <span>👤</span>
+                    <span id="userName">Admin</span>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#" id="viewProfile">👤 View Profile</a>
+                    <a href="#" id="settingsLink">⚙️ Settings</a>
+                    <a href="coach-dashboard.html" id="coachLink" style="display: none;">👨‍🏫 Coach Module</a>
+                    <hr>
+                    <a href="#" id="logoutBtn" onclick="signOut()">🚪 Logout</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="welcome-text">
+                Welcome back, <span id="welcomeName">Admin</span>! 
+                <span class="role-badge" id="roleBadge">Admin</span>
+            </h1>
+            <p class="welcome-subtitle">📊 Manage tournaments and track performance analytics</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-label">Active Tournaments</div>
+                <div class="stat-value" id="activeTournaments">3</div>
+                <div class="stat-trend trend-up">↑ 2 from last month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-label">Registered Teams</div>
+                <div class="stat-value" id="totalTeams">152</div>
+                <div class="stat-trend trend-up">↑ 18 new teams</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-label">Matches Today</div>
+                <div class="stat-value" id="matchesToday">8</div>
+                <div class="stat-trend">4 completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-label">Active Players</div>
+                <div class="stat-value" id="activePlayers">456</div>
+                <div class="stat-trend trend-up">↑ 12% growth</div>
+            </div>
+        </div>
+
+        <!-- Analytics Section (NEW!) -->
+        <div class="analytics-section">
+            <h2 class="section-title">📈 Analytics Dashboard</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">Tournament Status</h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Teams per Tournament</h3>
+                    <canvas id="teamsChart"></canvas>
+                </div>
+                <div class="chart-card chart-wide">
+                    <h3 class="chart-title">Monthly Activity</h3>
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h2 class="section-title">⚡ Quick Actions</h2>
+            <div class="action-buttons">
+                <button class="action-btn" id="createTournamentBtn">
+                    <span>➕</span> Create Tournament
+                </button>
+                <button class="action-btn" id="addTeamBtn">
+                    <span>👥</span> Add Team
+                </button>
+                <button class="action-btn action-btn-secondary" id="scheduleMatchBtn">
+                    <span>📅</span> Schedule Match
+                </button>
+                <button class="action-btn action-btn-secondary" id="viewReportsBtn">
+                    <span>📊</span> View Reports
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content with Sidebar -->
+        <div class="main-content">
+            <!-- Tournament Section -->
+            <div class="tournament-section">
+                <h2 class="section-title">🏆 My Tournaments</h2>
+                
+                <!-- Table Controls -->
+                <div class="table-controls">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search tournaments...">
+                    </div>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="date">Sort by Date</option>
+                        <option value="name">Sort by Name</option>
+                        <option value="teams">Sort by Teams</option>
+                    </select>
+                    <button class="export-btn" id="exportBtn">📥 Export CSV</button>
+                </div>
+
+                <!-- Tournament Table -->
+                <table class="tournament-table" id="tournamentTable">
+                    <thead>
+                        <tr>
+                            <th>Tournament Name</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Teams</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tournamentTableBody">
+                        <!-- Table rows will be inserted here by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Upcoming Matches -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">📅 Upcoming Matches</h3>
+                    <div class="match-item">
+                        <div class="match-time">⏰ Today, 2:00 PM</div>
+                        <div class="match-teams">Hawks vs Eagles</div>
+                        <div class="match-location">📍 Field 1, Hyderabad</div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-time">⏰ Today, 4:30 PM</div>
+                        <div class="match-teams">Phoenix vs Thunder</div>
+                        <div class="match-location">📍 Field 2, Hyderabad</div>
+                    </div>
+                    <div class="match-item">
+                        <div class="match-time">⏰ Tomorrow, 10:00 AM</div>
+                        <div class="match-teams">Warriors vs Titans</div>
+                        <div class="match-location">📍 Main Stadium</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">🔔 Recent Activity</h3>
+                    <div class="activity-item">
+                        <div class="activity-date">2 hours ago</div>
+                        <div class="activity-text">Team Phoenix joined Summer Championship</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">5 hours ago</div>
+                        <div class="activity-text">Match result: Hawks 15-13 Eagles</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">1 day ago</div>
+                        <div class="activity-text">New tournament: Winter League 2025</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">2 days ago</div>
+                        <div class="activity-text">Team Thunder registered</div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">🔗 Quick Links</h3>
+                    <div class="quick-links">
+                        <a href="leaderboard.html" class="quick-link">
+                            <span class="quick-link-icon">🏆</span>
+                            <span>View Leaderboards</span>
+                        </a>
+                        <a href="live-scores.html" class="quick-link">
+                            <span class="quick-link-icon">⚡</span>
+                            <span>Live Scoring</span>
+                        </a>
+                        <a href="match-schedule.html" class="quick-link">
+                            <span class="quick-link-icon">📅</span>
+                            <span>Match Schedule</span>
+                        </a>
+                        <a href="coach-dashboard.html" class="quick-link" id="coachQuickLink" style="display: none;">
+                            <span class="quick-link-icon">👨‍🏫</span>
+                            <span>Coach Module</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Pending Requests Section (NEW!) -->
+        <div class="requests-section">
+            <h2 class="section-title">📋 Pending Requests</h2>
+            <div class="requests-tabs">
+                <button class="request-tab active" data-tab="teams">Team Requests (3)</button>
+                <button class="request-tab" data-tab="players">Player Requests (5)</button>
+                <button class="request-tab" data-tab="spirit">Spirit Score Reviews (2)</button>
+            </div>
+
+            <!-- Team Requests -->
+            <div class="request-content active" id="teamsTab">
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">🏆 Thunder Bolts</h3>
+                            <span class="request-badge pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Tournament:</strong> Summer Championship 2025</p>
+                            <p><strong>Players:</strong> 14 members</p>
+                            <p><strong>Coach:</strong> Michael Chen</p>
+                            <p><strong>Requested:</strong> 2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveRequest('team', 1)">✓ Approve</button>
+                        <button class="btn-deny" onclick="denyRequest('team', 1)">✗ Deny</button>
+                    </div>
+                </div>
+
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">🏆 Sky Strikers</h3>
+                            <span class="request-badge pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Tournament:</strong> Monsoon League 2025</p>
+                            <p><strong>Players:</strong> 12 members</p>
+                            <p><strong>Coach:</strong> Sarah Johnson</p>
+                            <p><strong>Requested:</strong> 5 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveRequest('team', 2)">✓ Approve</button>
+                        <button class="btn-deny" onclick="denyRequest('team', 2)">✗ Deny</button>
+                    </div>
+                </div>
+
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">🏆 Disc Ninjas</h3>
+                            <span class="request-badge pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Tournament:</strong> State Championship 2025</p>
+                            <p><strong>Players:</strong> 15 members</p>
+                            <p><strong>Coach:</strong> David Lee</p>
+                            <p><strong>Requested:</strong> 1 day ago</p>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveRequest('team', 3)">✓ Approve</button>
+                        <button class="btn-deny" onclick="denyRequest('team', 3)">✗ Deny</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player Requests -->
+            <div class="request-content" id="playersTab">
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">👤 Alex Martinez</h3>
+                            <span class="request-badge pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Team:</strong> Hawks</p>
+                            <p><strong>Position:</strong> Handler</p>
+                            <p><strong>Experience:</strong> 3 years</p>
+                            <p><strong>Requested:</strong> 1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveRequest('player', 1)">✓ Approve</button>
+                        <button class="btn-deny" onclick="denyRequest('player', 1)">✗ Deny</button>
+                    </div>
+                </div>
+
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">👤 Emma Wilson</h3>
+                            <span class="request-badge pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Team:</strong> Phoenix</p>
+                            <p><strong>Position:</strong> Cutter</p>
+                            <p><strong>Experience:</strong> 2 years</p>
+                            <p><strong>Requested:</strong> 3 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveRequest('player', 2)">✓ Approve</button>
+                        <button class="btn-deny" onclick="denyRequest('player', 2)">✗ Deny</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spirit Score Reviews -->
+            <div class="request-content" id="spiritTab">
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">✨ Hawks vs Eagles</h3>
+                            <span class="request-badge review">Under Review</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Tournament:</strong> Summer Championship 2025</p>
+                            <p><strong>Submitted by:</strong> Hawks</p>
+                            <p><strong>Score Given:</strong> 14/20</p>
+                            <p><strong>Issue:</strong> Disputed fair-mindedness score</p>
+                            <div class="spirit-breakdown">
+                                <span>Rules: 3/4</span>
+                                <span>Fouls: 2/4</span>
+                                <span>Fair Play: 3/4</span>
+                                <span>Attitude: 3/4</span>
+                                <span>Self-Control: 3/4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveSpirit(1)">✓ Accept</button>
+                        <button class="btn-edit" onclick="editSpirit(1)">✏️ Adjust</button>
+                        <button class="btn-deny" onclick="denySpirit(1)">✗ Reject</button>
+                    </div>
+                </div>
+
+                <div class="request-card">
+                    <div class="request-info">
+                        <div class="request-header">
+                            <h3 class="request-team-name">✨ Phoenix vs Thunder</h3>
+                            <span class="request-badge review">Under Review</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Tournament:</strong> Monsoon League 2025</p>
+                            <p><strong>Submitted by:</strong> Phoenix</p>
+                            <p><strong>Score Given:</strong> 18/20</p>
+                            <p><strong>Issue:</strong> Exceptional sportsmanship noted</p>
+                            <div class="spirit-breakdown">
+                                <span>Rules: 4/4</span>
+                                <span>Fouls: 4/4</span>
+                                <span>Fair Play: 4/4</span>
+                                <span>Attitude: 3/4</span>
+                                <span>Self-Control: 3/4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="approveSpirit(2)">✓ Accept</button>
+                        <button class="btn-edit" onclick="editSpirit(2)">✏️ Adjust</button>
+                        <button class="btn-deny" onclick="denySpirit(2)">✗ Reject</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Create Tournament Modal -->
+    <div class="modal" id="createTournamentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Tournament</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="tournamentForm">
+                <div class="form-group">
+                    <label class="form-label">Tournament Name</label>
+                    <input type="text" name="name" class="form-input" placeholder="e.g., Summer Championship 2025" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" name="startDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">End Date</label>
+                    <input type="date" name="endDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-input" placeholder="City, Venue" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Max Teams</label>
+                    <input type="number" name="maxTeams" class="form-input" placeholder="24" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-submit">Create Tournament</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/tournament-dashboard.js"></script>
+
+</body>
+</html>
