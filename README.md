@@ -31,10 +31,12 @@ Clone the repository, set up your backend (with FastAPI, PostgreSQL, RBAC, JWT),
 
 ### Backend
 
-- **User & Role Management:** Secure JWT login, OAuth2, RBAC, password hashing (bcrypt, truncate >72B).
-- **CRUD APIs:** Full create/read/update/delete on users, teams, tournaments, matches, and attendance.
-- **Tournament & Matches:** Schedule matches, assign teams/venues, update scores, track status (live, completed).
-- **SQLAlchemy/PostgreSQL:** Persistent, scalable, and reliable data storage.
+- **Use the given link for backend:** [Download Backend Code](https://drive.google.com/file/d/1oAKJQ1qhCSBKLOb4Ds3zRG4Ak8QswF_G/view?usp=sharing)
+
+- **User & Role Management:** Secure JWT login, OAuth2, RBAC, password hashing (bcrypt, truncate >72B).  
+- **CRUD APIs:** Full create/read/update/delete on users, teams, tournaments, matches, and attendance.  
+- **Tournament & Matches:** Schedule matches, assign teams/venues, update scores, track status (live, completed).  
+- **SQLAlchemy/PostgreSQL:** Persistent, scalable, and reliable data storage.  
 - **Attendance Histories:** Record and query child/team attendance.
 - **Notifications Engine:** Per-role, per-user notifications, mark/read/update support.
 - **Secure Middleware:** Role checks for every endpoint; protects all sensitive routes.
